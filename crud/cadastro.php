@@ -38,7 +38,7 @@ if(isset($_POST["nome"]) && isset($_POST["email"]) && isset($_POST["cidade"]) &&
         if($id == -1)
         {
 
-            $stmt = $obj_mysqli->prepare('INSERT INTO `cliente` (`nome`, `email`, `cidade`, `uf`) VALUES (?, ?, ?, ?)');
+            $stmt = $obj_mysqli->prepare("INSERT INTO `cliente` (`nome`, `email`, `cidade`, `uf`) VALUES (?, ?, ?, ?)");
             $stmt->bind_param("ssss", $nome, $email, $cidade, $uf);
 
             if(!$stmt->execute())
@@ -51,14 +51,29 @@ if(isset($_POST["nome"]) && isset($_POST["email"]) && isset($_POST["cidade"]) &&
                 exit;
             }
         }
-            //Retorna um erro.
-            else
-            {
-                $erro = "Número inválido";
-            }
-        }
 
+        elseif(is_numeric($id) && $id >= 1)
+        {
+            $stmt = $obj_mysqli->prepare("UPDATE `cliente` SET `nome`=?, `email`=?, `cidade`=?, `uf`=? WHERE id=?");
+            $stmt->bind_param('ssssi', $nome, $email, $cidade, $uf, $id);
+
+        if(!$stmt->execute())
+        {
+            $erro = $stmt->error;
+        }
+        else
+        {
+            header("Location:cadastro.php");exit;
+        }
     }
+        //Retorna um erro.
+        else
+        {
+            $erro = "Número inválido";
+        }
+    }
+
+}
     else
     //Incluimos este bloco, onde vamos verificar a existência do id passado...
     if(isset($_GET["id"]) && is_numeric($_GET["id"]))
@@ -101,14 +116,8 @@ if(isset($_POST["nome"]) && isset($_POST["email"]) && isset($_POST["cidade"]) &&
             }
         }
 ?>
-    
 
-
-
-
-
-
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -117,53 +126,49 @@ if(isset($_POST["nome"]) && isset($_POST["email"]) && isset($_POST["cidade"]) &&
 </head>
 <body>
     <?php
-    if(isset($erro))
-        echo'<div style="color:#F00">'.$erro.'</div><br/><br/>';
-    elseif(isset($sucesso))
-        echo'<div style="color:#00f">'.$sucesso.'</div><br/><br/>';
+        if(isset($erro))
+            echo'<div style="color:#F00">'.$erro.'</div><br/><br/>';
+        elseif(isset($sucesso))
+            echo'<div style="color:#00f">'.$sucesso.'</div><br/><br/>';
     ?>
-        <!-- Quando os dados inseridos no formulário vão ser enviados à página cadastro.php -->
-    <form action="<?=$_SERVER["PHP_SELF"]?>" method="POST">
-
-        <!-- Criando um formulário em html dentro de um arquivo php -->
-        <form> 
+        <form action="<?=$_SERVER["PHP_SELF"]?>" method="POST">
             Nome: <br>
-            <input type="text" name="nome" placeholder="Qual seu nome?"><br><br>
+            <input type="text" name="nome" placeholder="Qual seu nome?" value="<?=$nome?>"><br><br>
             E-mail: <br>
-            <input type="email" name="email" placeholder="Qual o seu e-mail?"><br><br>
+            <input type="email" name="email" placeholder="Qual o seu e-mail?" value="<?=$email?>"><br><br>
             Cidade: <br>
-            <input type="text" name="cidade" placeholder="Qual sua cidade?"><br><br>
+            <input type="text" name="cidade" placeholder="Qual sua cidade?" value="<?=$cidade?>"><br><br>
             UF: <br>
-            <input type="text" name="uf" size="2" placeholder="UF">
+            <input type="text" name="uf" size="2" placeholder="UF" value="<?=$uf?>">
             <br><br>
-            <input type="hidden" value="-1" name="id"><!-- Vai gerar um ID quando houver um insert no banco de dados -->
-            <button type="submit">Cadastrar</button>
+            <input type="hidden" value="<?=$id?>" name="id">
+        <button type="submit"><?=($id==-1)?"Cadastrar":"Salvar"?></button>
         </form>
         <br>
         <br>
-        <table width="400px"border="0"cellspacing="0">
+        <table width="400px"border="1"cellspacing="0">
             <tr>
-                <td><strong>#</strong></td>
-                <td><strong>Nome</strong></td>
-                <td><strong>Email</strong></td>
-                <td><strong>Cidade</strong></td>
-                <td><strong>UF</strong></td>
-                <td><strong>#</strong></td>
+                <th><strong>#</strong></th>
+                <th><strong>Nome</strong></th>
+                <th><strong>Email</strong></th>
+                <th><strong>Cidade</strong></th>
+                <th><strong>UF</strong></th>
+                <th><strong>#</strong></th>
             </tr>
                 <?php
                 $result = $obj_mysqli->query("SELECT * FROM `cliente`");
                 while($aux_query = $result->fetch_assoc())
                 {
-                    echo' <tr>';
-                    echo' <td>'.$aux_query["Id"].'</td>';
-                    echo' <td>'.$aux_query["Nome"].'</td>';
-                    echo' <td>'.$aux_query["Email"].'</td>';
-                    echo' <td>'.$aux_query["Cidade"].'</td>';
-                    echo' <td>'.$aux_query["UF"].'</td>';
-                    echo' <td><a href="'.$_SERVER["PHP_SELF"].'?id='.$aux_query["Id"].'">Editar</a></td>';
-                    echo' <td><a href="'.$_SERVER["PHP_SELF"].'?id='.$aux_query["Id"].'&del=true">Excluir</a></td>';
-                    echo' </tr>';
-                    }
+                    echo'<tr>';
+                    echo '<td>'.$aux_query["Id"].'</td>';
+                    echo '<td>'.$aux_query["Nome"].'</td>';
+                    echo '<td>'.$aux_query["Email"].'</td>';
+                    echo '<td>'.$aux_query["Cidade"].'</td>';
+                    echo '<td>'.$aux_query["UF"].'</td>';
+                    echo '<td><a href="'.$_SERVER["PHP_SELF"].'?id='.$aux_query["Id"].'">Editar</a></td>';
+                    echo '<td><a href="'.$_SERVER["PHP_SELF"].'?id='.$aux_query["Id"].'&del=true">Excluir</a></td>';
+                    echo'</tr>';
+                }
                 ?>
         </table>
         </form>
