@@ -1,4 +1,5 @@
 <?php
+
 include_once 'psl-config.php';
 
 function sec_session_start() {
@@ -21,13 +22,13 @@ function sec_session_start() {
 
     //Obtém params de cookies autalizados.
 
-    $cookiesParams = session_get_cookie_params();
+    $cookieParams = session_get_cookie_params();
 
-    session_set_cookie_params($cookiesParams["lifetime"],
+    session_set_cookie_params($cookieParams["lifetime"],
 
-        $cookiesParams["path"],
+        $cookieParams["path"],
 
-        $cookiesParams["domain"],
+        $cookieParams["domain"],
 
         $secure,
 
@@ -137,7 +138,7 @@ function checkbrute($user_id, $mysqli) {
 
     $valid_attempts = $now - (2 * 60 * 60);
 
-    if ($stmt = $mysqli->prepare("SELECT time FROM login_attempts <code><pre> WHERE user_id = ? AND time > '$valid_attempts'")) {
+    if ($stmt = $mysqli->prepare("SELECT time FROM login_attempts WHERE user_id = ? AND time > '$valid_attempts'")) { //tirei o <code><pre>, pois o código após executado não estava funcionando.
 
         $stmt->bind_param('i', $user_id);
 
@@ -151,7 +152,7 @@ function checkbrute($user_id, $mysqli) {
 
         if ($stmt->num_rows > 5) {
             
-            return tru;
+            return true;
         }
         else {
             return false;
