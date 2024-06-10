@@ -1,13 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <p>
-        rola
-    </p>
-</body>
-</html>
+<?php
+    //CRIANDO VARIÁVEIS E DECLARANDO ELAS.
+    $localhost = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "samueldb";
+    //FAZENDO UMA CONEXÃO COM O BANCO DE DADOS E ATRIBUINDO PARA A VARIÁVEL $con.
+    $con = mysqli_connect($localhost, $username, $password, $dbname);
+    //SE A CONEXÃO COM O BANCO DE DADOS DER ERRO DÊ UM FIM NA CONEXÃO.
+    if ($con->connect_error) {
+        die ("connection failed:".$con->connect_error);
+    }
