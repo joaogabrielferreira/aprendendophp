@@ -13,7 +13,7 @@ require_once 'header.php';
             $lastname = $_POST['lastname'];
             $address = $_POST['address'];
             $contact = $_POST['contact'];
-            $sql = "UPDATE users SET firstname='{$firstname}', lastname = '{$lastname}', address = '{address}', contact = '{contact}' WHERE user_id=" . $_POST['userid'];
+            $sql = "UPDATE users SET firstname='{$firstname}', lastname = '{$lastname}', address = '{$address}', contact = '{$contact}' WHERE user_id=" . $_POST['userid'];
             if ($con->query($sql) === TRUE) {
                 echo "<div class='alert alert-sucess'>Successfully updated user</div>";
             } else {
@@ -35,11 +35,26 @@ require_once 'header.php';
             <div class="box">
                 <h3><i class="glyphicon glyphicon-plus"></i>&nbsp;MODIFY User</h3>
                 <form action="" method="POST">
-                    <input type="hidden" value="<?php echo $row['user_id'];?>" name="userid">
+                    <input type="hidden" value="<?php echo $row['user_id']; ?>" name="userid">
                     <label for="firstname">Firstname</label>
+                    <input type="text" id="firstname" name="firstname" value="<?php echo $row['firstname']; ?>"
+                        class="form-control"><br>
+                    <label for="lastname">Lastname</label>
+                    <input type="text" id="lastname" name="lastname" value="<?php echo $row['lastname']; ?>"
+                        class="form-control"><br>
+                    <label for="address">Address</label>
+                    <textarea rows="4" name="address" class="form-control"><?php echo $row['address']; ?></textarea><br>
+                    <label for="contact">Contact</label>
+                    <input type="text" name="contact" id="contact" value="<?php echo $row['contact']; ?>"
+                        class="form-control"><br>
+                    <br>
+                    <input type="submit" name="update" class="btn btn-success" value="Update">
                 </form>
 
             </div>
 
         </div>
     </div>
+</div>
+<?php
+require_once 'footer.php';

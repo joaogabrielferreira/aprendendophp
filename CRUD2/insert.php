@@ -1,4 +1,7 @@
-<div?php require_once 'connect.php' ; require_once 'header.php' ; ?>
+<?php 
+require_once 'connect.php'; 
+require_once 'header.php'; 
+?>
 
     <div class="container">
         <?php
@@ -12,6 +15,7 @@
                 $lastname = $_POST['lastname'];
                 $address = $_POST['address'];
                 $contact = $_POST['contact'];
+
                 $sql = "INSERT INTO user (firstname, lastname, address, contact) VALUES ('$firstname', '$lastname', '$address', '$contact')";
                 if ($con->query($sql) === TRUE) {
                     echo "<div class='alert alert-success'>Successfully added new user</div>";
@@ -24,7 +28,7 @@
         ?>
 
         <div class="row">
-            <div class="col-md-6-col-md-offset-3">
+            <div class="col-md-6 col-md-offset-3">
                 <div class="box">
                     <h3><i class="glyphicon glyphicon-plus"></i>&nbsp;Add New User</h3>
                     <form action="" method="POST">
