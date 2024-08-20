@@ -1,3 +1,5 @@
+<!-- TESTE UNITÁRIO -->
+
 <?php
 use PHPUnit\Framework\TestCase; //Importa a classe TestCase para utilizá-la na execução dos testes
 
@@ -18,5 +20,5 @@ class NumberCheckerTest extends TestCase //Cria-se uma classe chamado NumberChec
 }
 
 //COMO EXECUTAR O TESTE UNITÁRIO
-//cd testephp
-//php vendor\bin\phpunit NumberCheckerTest.php
+//composer require --dev phpunit/phpunit ^11
+//php vendor\bin\phpunit testesphp\NumberCheckerTest.php

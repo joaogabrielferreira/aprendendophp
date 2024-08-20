@@ -1,3 +1,5 @@
+<!-- TESTE UNITÁRIO -->
+
 <?php
 class NumberChecker //Cria-se uma classe chamada NumberChecker
 {
